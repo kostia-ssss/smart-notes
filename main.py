@@ -69,13 +69,15 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        #app.setStyleSheet(style)
+        app.setStyleSheet(style)
         self.show_notes()
         
         self.list_notes.itemClicked.connect(self.show)
         self.create_note.clicked.connect(self.add)
         self.save_notes.clicked.connect(self.save_note)
         self._.clicked.connect(self.del_note)
+        self.add_to_note.clicked.connect(self.add_tegs)
+        self.delete_in_note.clicked.connect(self.del_tegs)
         
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -134,6 +136,28 @@ class Ui_MainWindow(object):
         self.textEdit.setText(data[t]["текст"])
         self.list_tegs.clear()
         self.list_tegs.addItems(data[t]["теги"])      
+    
+    def add_tegs(self):
+        if self.list_notes.currentItem():
+            teg = self.lineEdit.text()
+            if teg and not (teg in data[self.list_notes.currentItem().text()]["теги"]):
+                data[self.list_notes.currentItem().text()]["теги"].append(teg)
+                self.list_tegs.addItem(teg)
+                self.lineEdit.clear()
+                with open("notes.json" , "w" , encoding="utf-8") as file:
+                    json.dump(data , file , sort_keys=True)
+    
+    def del_tegs(self):
+        if self.list_notes.currentItem() and self.list_tegs.currentItem():
+            t = self.list_notes.currentItem().text()
+            teg = self.list_tegs.currentItem().text()
+            index = data[t]["теги"].index(teg)
+            del data[t]["теги"][index]
+            self.list_tegs.clear()
+            with open('notes.json' , 'w' , encoding='utf-8') as file:
+                for teg in data[t]["теги"]:
+                    self.list_tegs.addItem(teg)
+                json.dump(data , file)
                 
 if __name__ == "__main__":
     import sys

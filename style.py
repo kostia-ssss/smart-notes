@@ -1,21 +1,27 @@
 style = """
-QPushButton,
+QPushButton
+{
+    border : 1px solid black;
+    background-color : #ff00ff;
+    color : #ffff00;
+    border-radius : 2;
+    font : bold 14px "Comic Sans MS";
+}
 QListWidget,
 QLineEdit,
 QTextEdit,
 QLabel{
     border : 1px solid black;
-    background-color : #551100;
-    color : #ff0000;
+    background-color : #00ddff;
+    color : #ffffff;
     border-radius : 2;
+    font : bold 14px "Comic Sans MS";
 }
 QPushButton:pressed {
     border : 1px solid black;
-    background-color : #000000;
-    color : #ff0000;
+    background-color : #00ff00;
+    color : #000000;
     border-radius : 2;
-}
-QApplication {
-    color : #ff0000
+    font : bold 14px "Comic Sans MS";
 }
 """
