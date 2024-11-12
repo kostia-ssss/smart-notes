@@ -71,6 +71,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         app.setStyleSheet(style)
         self.show_notes()
+        self.lineEdit.setPlaceholderText("Введіть текст...")
         
         self.list_notes.itemClicked.connect(self.show)
         self.create_note.clicked.connect(self.add)
@@ -78,6 +79,7 @@ class Ui_MainWindow(object):
         self._.clicked.connect(self.del_note)
         self.add_to_note.clicked.connect(self.add_tegs)
         self.delete_in_note.clicked.connect(self.del_tegs)
+        self.search_notes_with_teg.clicked.connect(self.search_notes_by_teg)
         
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -158,6 +160,26 @@ class Ui_MainWindow(object):
                 for teg in data[t]["теги"]:
                     self.list_tegs.addItem(teg)
                 json.dump(data , file)
+    
+    def search_notes_by_teg(self):
+        if self.search_notes_with_teg.text() == "Шукати замітки по тегу":
+            teg = self.lineEdit.text()
+            search_notes = {}
+            for note in data:
+                if teg in data[note]["теги"]:
+                    search_notes[note] = data[note]
+            print(search_notes)
+            self.list_notes.clear()
+            self.list_notes.addItems(search_notes)
+            self.textEdit.clear()
+            self.list_tegs.clear()
+            self.search_notes_with_teg.setText("Скинути пошук")
+        else:
+            self.textEdit.clear()
+            self.list_tegs.clear()
+            self.search_notes_with_teg.setText("Шукати замітки по тегу")
+            self.list_notes.clear()
+            self.list_notes.addItems(data)
                 
 if __name__ == "__main__":
     import sys
